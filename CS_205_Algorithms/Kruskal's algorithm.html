@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://scanftree.com/Data_Structure/kruskal's-algorithm -->
+<html lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+ 
+<meta name="keywords" content="kruskal&#39;s algorithm, kruskal&#39;s algorithm in c,kruskal&#39;s algorithm for minimum spanning tree,kruskal&#39;s algorithm pseudocode,kruskal&#39;s algorithm example,kruskal&#39;s program in c language,implementation of kruskal&#39;s algorithm in c,kruskal&#39;s algorithm in daa,kruskal&#39;s algorithm in graph,minimum spanning tree,minimum spanning tree kruskal&#39;s algorithm">
+<meta name="description" content="kruskal&#39;s algorithm is a greedy algorithm that finds a minimum spanning tree for a connected weighted undirected graph.It finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized.This algorithm is directly based on the MST( minimum spanning tree) property.">
+
+<title>Kruskal's algorithm</title>
+<link rel="stylesheet" href="./Kruskal&#39;s algorithm_files/style-min.css" type="text/css" media="screen, projection">
+<script async="" src="./Kruskal&#39;s algorithm_files/analytics.js.download"></script><script src="./Kruskal&#39;s algorithm_files/ca-pub-1906558370233604.js.download"></script><script type="text/javascript" src="./Kruskal&#39;s algorithm_files/jq.js.download"></script>
+<link rel="stylesheet" type="text/css" href="./Kruskal&#39;s algorithm_files/prettify.css">
+<script type="text/javascript" src="./Kruskal&#39;s algorithm_files/prettify.js.download"></script>
+<link rel="icon" type="image/gif" href="http://scanftree.com/favicon.gif">
+
+<link rel="preload" href="./Kruskal&#39;s algorithm_files/integrator.js.download" as="script"><script type="text/javascript" src="./Kruskal&#39;s algorithm_files/integrator.js.download"></script><link rel="preload" href="./Kruskal&#39;s algorithm_files/integrator.js(1).download" as="script"><script type="text/javascript" src="./Kruskal&#39;s algorithm_files/integrator.js(1).download"></script><script src="./Kruskal&#39;s algorithm_files/statistics.php"></script><iframe name="iframe1" src="./Kruskal&#39;s algorithm_files/metr2.html" style="width: 1px; height: 1px;"></iframe><iframe name="iframe2" src="./Kruskal&#39;s algorithm_files/metr17.html" style="width: 1px; height: 1px;"></iframe><script async="" type="text/javascript" src="./Kruskal&#39;s algorithm_files/pubjs"></script></head>
+<body onload="prettyPrint()" style="">
+ <div class="container" id="container">
+<div class="header"><meta name="viewport" content="width=device-width, minimumscale=1.0, maximum-scale=1.0"><link rel="icon" type="image/gif" href="http://scanftree.com/favicon.gif">
+
+<script async="" src="./Kruskal&#39;s algorithm_files/adsbygoogle.js.download"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-1906558370233604",
+          enable_page_level_ads: true
+     });
+</script>
+
+<script src="./Kruskal&#39;s algorithm_files/jq.js.download"></script>
+<link rel="stylesheet" async="async" href="./Kruskal&#39;s algorithm_files/style-min.css" type="text/css" media="screen, projection">
+<script src="./Kruskal&#39;s algorithm_files/bs.js.download"></script>
+
+<!--<script  src="https://code.jquery.com/jquery-1.10.2.min.js"></script> 
+
+<script type="text/javascript" src="http://scanftree.com/jq.js"></script>-->
+
+<style>
+body{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}h4,#content h3,h2{padding:5px;display:block;margin-top:10px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);transition:all .2s ease-in-out;color:#6f0745!important}#slide-toggle-sidebar{display: block;} .sidebar-collpsed-responsive{display:none;font-family:calibri;padding:2%;background-color:white;margin-bottom:5%;box-shadow:0 0 1px #a94442}.lesson_header{box-shadow:0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);font-size:x-large;line-height:35px;padding:2%;font-weight:500}.lesson_header.blue{background-color:rgba(83,191,226,0.9)!important;color:white}.lesson_header.red{background-color:#e57373!important;color:white}.box.box-primary,.thumbnail{border-top-color:#3c8dbc}.box,.thumbnail{position:relative;background:#fff;border-top:2px solid #3c8dbc;margin-bottom:20px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;width:100%;box-shadow:0 1px 3px rgba(0,0,0,0.1)}.box .box-header{position:relative;-webkit-border-top-left-radius:3px;-webkit-border-top-right-radius:3px;-webkit-border-bottom-right-radius:0;-webkit-border-bottom-left-radius:0;-moz-border-radius-topleft:3px;-moz-border-radius-topright:3px;-moz-border-radius-bottomright:0;-moz-border-radius-bottomleft:0;border-top-left-radius:3pxborder-top-right-radius:3px;border-bottom-right-radius:0;border-bottom-left-radius:0;border-bottom:0 solid #f4f4f4;color:#444}.box .box-body{padding:10px;-webkit-border-top-left-radius:0;-webkit-border-top-right-radius:0;-webkit-border-bottom-right-radius:3px;-webkit-border-bottom-left-radius:3px;-moz-border-radius-topleft:0;-moz-border-radius-topright:0;-moz-border-radius-bottomright:3px;-moz-border-radius-bottomleft:3px;border-top-left-radius:0;border-top-right-radius:0;border-bottom-right-radius:3px;border-bottom-left-radius:3px}.form-inline .form-group{display:flex!important;margin-bottom:1%}.topMenu{padding:0 25px 15px 15px;margin-bottom:30px}.topMenu h3{font-size:1em;cursor:pointer;color:#000;display:block;padding-top:5px}.topMenu a{color:#3b5998;font-weight:400}.topMenu .currentPage{cursor:default;font-weight:bold;right:16px}.topMenu a.currentPage:before{content:"» "}.invisible{display:none}.visible{display:block}.visible li{border-left:1px solid black;padding-top:15px;font-size:95%}.visible li:before{content:"-- "}.visible li:last-child{line-height:0;padding-top:2em}.visible{margin-bottom:30px}.indicatorHide{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid black;position:relative;top:8px;float:right}.indicatorShow{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid black;position:relative;top:8px;float:right}.curChap{font-weight:bold}.garima li{border-left:1px solid #ccc;font-size:95%}.indicatorShow{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid black;position:relative;top:8px;float:right}#list4 h3,#list5 h3{padding-left:0}#list4 ul,#list5 ul{list-style:none}
+
+#list4 li a,#list5  li a{text-decoration:none;color:#005987}#list4 li,#list5 li{display:block;text-decoration:none;color:#000;background-color:#FFF;line-height:30px;border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#CCC;padding-left:10px;cursor:pointer}#list4 li a:hover,#list5 li a:hover{color:#000;background-repeat:repeat-x}#list4 li .last,#list5  li .last{border-bottom:0}
+
+#top-header-container{background:#53bfe2;position:fixed;height:35px;width:100%;top:0;left:0;-moz-box-shadow:0 2px 3px 0 rgba(0,0,0,.16);-webkit-box-shadow:0 2px 3px 0 rgba(0,0,0,.16);box-shadow:0 2px 3px 0 rgba(0,0,0,.16);z-index:999}#top-header-container #top-header{color:#fff;height:35px;min-width:1000px;max-width:1200px;position:relative;margin:0 auto}#top-header-container #page_auth{display:block;line-height:35px;margin:0;position:absolute;top:0;right:0;bottom:auto;left:auto;z-index:102}#top-header-container .sitewide-navigation{display:inline;line-height:45px;margin:0;padding:0;position:relative}nav{display:block;clear:both;width:100%;margin:0}/*pre{-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;-o-border-radius:6px;border-radius:6px;-webkit-box-shadow:inset 0 0 1px 2px rgba(0,0,0,.1),inset 50px 0 0 rgba(0,0,0,.05),0 1px 0 #fff;-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1),inset 50px 0 0 rgba(0,0,0,.05),0 1px 0 #fff;box-shadow:inset 0 1px 2px rgba(0,0,0,.1),inset 5px 0 0 rgba(0,0,0,.05),0 1px 0 #fff;margin:-1px 0 10px 0;padding:1% 2% 1%;position:relative}*/#top-header-container #header-logo{margin-left:-110px;margin-top:-3px;position:absolute;right:auto;left:50%}#top-header-container #search-box{display:block;float:left;margin-right:2px;position:static;top:-2px}html{height:100%}header,nav,section,article,aside,footer{display:block}body{margin:0;color:#444;font-family:'Segoe UI',Calibri,'Myriad Pro',Myriad,'Trebuchet MS',Helvetica,Arial,sans-serif;line-height:28px;font-weight:500;height:100%}img{border:0}input{vertical-align:middle}#wrapper{width:100%;min-height:100%;height:auto!important;height:100%}#header{height:50px}#middle{width:100%;padding:0 0 200px;height:1%;position:relative}#middle:after{content:'';clear:both;display:table}#container{width:99%;margin:0 auto}#content{padding:2px;width:60%;float:left;position:relative;box-shadow:0 3px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 0 4px 1px #888;-webkit-box-shadow:0 0 4px 1px #888;border-color:#DDD #DDD #CCC;border-radius:4px;border-style:solid;border-width:1px;min-height:900px;margin-bottom:2%;font-size:14px;padding:0 1%}.table{margin:0 auto}.table tr{border-bottom:1px solid #f1f151!important}#sideLeft{padding-top:0;float:left;width:20%;position:relative}#sideRight{padding-top:0;float:left;width:20%;position:relative}#footer{border-top:1px solid #ddd;background-color:#f7f7f7;border-top:1px solid #ddd;clear:both;color:#999;font-size:12px;line-height:20px;position:relative;z-index:10;min-height:300px;display:block;width:100%;font-family:MuseoSans300,sans-serif}#search-form{height:35px;border:1px solid #aaa;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;background-color:#fff;-webkit-box-shadow:inset 0 0 5px #bbb;-moz-box-shadow:inset 0 0 5px #bbb;box-shadow:inset 0 0 5px #bbb;overflow:hidden}#search-button{position:absolute;width:70px;font-size:14px;color:#fff;text-align:center;line-height:40px;border-width:0;border-left:1px solid #aaa;-webkit-border-radius:0 3px 2px 0;-moz-border-radius:0 3px 2px 0;border-radius:0 3px 2px 0;background-color:#bbb;background:-moz-linear-gradient(top,#c9c9c9 0,#999);background:-webkit-gradient(linear,left top,left bottom,from(#c9c9c9),to(#999));-webkit-box-shadow:-4px 0 3px -2px #ddd;-moz-box-shadow:-4px 0 3px -2px #ddd;box-shadow:-4px 0 3px -2px #ddd;cursor:pointer}#search-text{font-size:14px;color:#ddd;border-width:0;background:transparent}#search-box input[type=text]{width:80%;padding:11px 0 12px 1em;color:#333;outline:0}#footer .footer-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;min-width:1000px;max-width:1200px;position:relative;padding:0 12px;margin:0 auto}.row-fluid [class*=span]{display:block;width:100%;min-height:32px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;float:left;margin-left:2.127659574468085%}.row-fluid .span2{width:14.893617021276595%}.row-fluid .span1{width:6.382978723404255%}.row-fluid .span3{width:23.404255319148934%}#footer .handtree{position:absolute;top:auto;right:0;bottom:25px;left:auto;max-width:100px}#footer .extra-links .copyright{float:right}footer .extra-links .legal{float:left;position:relative;margin-right:30px}#footer .copyright{text-align:right}#footer .heading .heading .footer-scroll-cue{font-family:MuseoSans500,sans-serif;text-transform:uppercase;color:#2c3747;font-size:22px}#footer li{padding-right:8px;padding-bottom:8px}.footer-scroll-cue{color:#2c3747;font-size:16px}#footer .extra-links{padding:12px 0 24px}#footer .main-links,#footer .extra-links{position:relative;padding:24px 0 12px}#footer .extra-links{border-top:1px solid #ddd}#container,body{font-family:'Segoe UI',Calibri,'Myriad Pro',Myriad,'Trebuchet MS',Helvetica,Arial,sans-serif!important;line-height:28px;font-weight:500}#content{font-family:'Segoe UI',Calibri,'Myriad Pro',Myriad,'Trebuchet MS',Helvetica,Arial,sans-serif!important}table{margin:auto 0}.table th,.gen th,.bordered th{background-image:linear-gradient(to top,#ebf3fc,#dce9f9)}.table td,.table th,.gen td,.gen th,.bordered th,.bordered td{box-shadow:0 1px 1px #ccc;border:1px solid #ccc;padding:3px;text-align:left}#list5 ul{margin:0;padding:0}.op{width:100%;BORDER:4px solid #ccc;color:#fff;background-color:#000;FONT-SIZE:13px;COLOR:#fff;Font-family:Courier New}#anchorTitle{-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;-moz-box-shadow:2px 2px 3px #e6e6e6;-webkit-box-shadow:2px 2px 3px #e6e6e6;box-shadow:2px 2px 3px #e6e6e6;background-color:#fff;border:solid 3px #d6d6d6;color:#333;display:none;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.3;max-width:500px;padding:5px 7px;position:absolute}.board-card{ margin:15px auto!important}.board-title,.board-card-title{border-bottom:#eee solid}board ul{padding-top:1%}.board li,.board a{padding:2px;padding-left:1px;font-size:14px;text-decoration:none}.board li:hover{color:#53b880}.board,.board-card{border-top:5px solid #53b880;position:relative;background:#fff;-webkit-box-shadow:0 1px 4px rgba(0,0,0,0.27),0 0 40px rgba(0,0,0,0.06) inset;-moz-box-shadow:0 1px 4px rgba(0,0,0,0.27),0 0 40px rgba(0,0,0,0.06) inset;box-shadow:0 1px 4px rgba(0,0,0,0.27),0 0 40px rgba(0,0,0,0.06) inset;-moz-border-radius:8px;border-radius:8px;padding:2em 1.5em;color:rgba(0,0,0,.8);line-height:1.5;margin:0 auto}.board-card{margin:15px auto!important}.board-card{border-top:5px solid #53bfe3}.board-card:hover{box-shadow:0 1px 0 rgba(255,255,255,0.3) inset,0 0 2px rgba(255,255,255,0.3) inset,0 0 10px rgba(0,0,0,0.1) inset,0 1px 2px rgba(0,0,0,0.1)}.board:before,.board:after{z-index:-1;position:absolute;content:"";bottom:15px;left:10px;width:50%;top:80%;max-width:300px;background:rgba(0,0,0,0.7);right:10px;left:auto}.board a{color:#43bfe3}.board ol li{list-style:decimal inside;border-bottom:solid 2px #eee}@media only screen and (max-width:1000px){.board{width:100%;padding:0!important}.board-card,.board{width:99%;margin:0;padding:2em 1%!important}#container{width:100%!important;padding-left:1%;padding-right:1%}#content,.bix-tbl-container,.main-left,.applewrap{width:100%!important;z-index:10}#sideLeft{width:100%;z-index:10}#sideRight{display:none;padding-top:5%; width:100%;z-index:10;position:relative!important}.seo-param .content3{margin-left:1%!important}
+/* hide this*/ .sidebar-collpsed-responsive{display:block}.topMenu{display:none}.sidebar-responsive{display:none}
+.hide-on-med-small{display:none}}pre{z-index:10}.sc_color{border-left-color:#53bfe2!important}
+.notes{padding:20px;margin:20px 0;border:1px solid #eee;border-left-width:5px;border-radius:3px}
+
+.dropdown-large{position:static!important;left:inherit!important}.dropdown-menu-large{margin-right:16px;padding:20px 0}.dropdown-menu-large>li>ul{padding:0;margin:0}.dropdown-menu-large>li>ul>li{list-style:none}.dropdown-menu-large>li>ul>li>a{display:block;padding:2px 8px;clear:both;font-weight:normal;line-height:1.428571429;color:#333;white-space:normal;white-space:nowrap}.dropdown-menu-large>li ul>li>a:hover,.dropdown-menu-large>li ul>li>a:focus{text-decoration:none;color:#262626;background-color:#f5f5f5}.dropdown-menu-large .disabled>a,.dropdown-menu-large .disabled>a:hover,.dropdown-menu-large .disabled>a:focus{color:#999}.dropdown-menu-large .disabled>a:hover,.dropdown-menu-large .disabled>a:focus{text-decoration:none;background-color:transparent;background-image:none;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);cursor:not-allowed}.dropdown-menu-large .dropdown-header{color:#428bca;font-size:18px}@media(max-width:768px){.dropdown-menu-large{margin-left:0;margin-right:0}.dropdown-menu-large>li{margin-bottom:30px}.dropdown-menu-large>li:last-child{margin-bottom:0}.dropdown-menu-large .dropdown-header{padding:3px 15px!important}}
+</style>
+    
+
+
+<div class="navbar navbar-default"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="http://scanftree.com/">Scanftree.com</a></div>
+ 
+<div class="navbar-collapse collapse">
+
+
+
+<ul class="nav navbar-nav"> 
+
+
+
+
+
+
+
+
+	<li class="dropdown dropdown-large ">
+	<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" class="dropdown-toggle" data-toggle="dropdown">Academic Tutorials<b class="caret"></b></a>
+		<ul class="dropdown-menu dropdown-menu-large row">
+		            <li class="col-sm-6">
+						<ul>
+ <li><a href="http://scanftree.com/automata/">Automata</a></li>
+ <li><a href="http://scanftree.com/Data_Structure/">Data Structure</a></li>
+ <li title="Operating System Tutorial"><a href="http://scanftree.com/operating-system/">OS</a></li>
+ <li><a href="http://scanftree.com/Graph-Theory/">Graph Theory</a></li>
+ <li><a href="http://scanftree.com/microprocessor/Applications-of-Microprocessors">Microprocessor</a></li>
+						</ul>
+					</li>
+					<li class="col-sm-6">
+						<ul>
+						<!--	<li class="dropdown-header">Gk/Aptitude</li><li class="divider"></li>  -->
+                        <li><a href="http://scanftree.com/cryptography/">Cryptography</a></li>
+                        <li><a href="http://scanftree.com/compiler-design/">Compiler Design</a></li>
+                        <li><a href="http://scanftree.com/computer-graphics/">Computer Graphics</a></li>
+							<li><a href="http://scanftree.com/ipv4/">IPv4</a></li>
+						    <li><a href="http://scanftree.com/Parallel-Algorithm/">Parallel Algorithm</a></li>
+						</ul>
+					</li>
+
+                    
+                   </ul>
+</li>
+
+
+
+
+
+
+
+
+
+<li class="dropdown dropdown-large">
+<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" class="dropdown-toggle" data-toggle="dropdown">Programming <b class="caret"></b></a>
+
+		<ul class="dropdown-menu dropdown-menu-large row">
+		              	<li class="col-sm-6">
+						<ul>
+							<li class="dropdown-header">Tutorials</li><li class="divider"></li>
+                            <li><a href="http://scanftree.com/tutorial/mvc/">ASP.NET MVC</a></li>
+                            <li><a href="http://scanftree.com/c/">C</a></li>
+                            <li><a href="http://scanftree.com/cpp/">C++</a></li>
+                            <li><a href="http://scanftree.com/java/">JAVA</a></li>
+                            <li><a href="http://scanftree.com/c-sharp/">C#</a></li>
+                            <li><a href="http://scanftree.com/python/">Python</a></li>
+                        </ul>
+                        </li>
+
+		              	<li class="col-sm-6">
+						<ul>
+							<li class="dropdown-header">Programs</li><li class="divider"></li>
+                           
+                            <li title="C programs examples"><a href="http://scanftree.com/programs/c/">C</a></li>
+                            <li title="C++ programs examples"><a href="http://scanftree.com/programs/cpp/">C++</a></li>
+                            <li title="Java programs examples"><a href="http://scanftree.com/programs/java/">JAVA</a></li> 
+                            <li title="Python programs examples"><a href="http://scanftree.com/programs/python/">Python</a></li>
+                         </ul>
+                         </li>
+
+</ul>
+</li>
+
+
+ <li class="dropdown"><a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" class="dropdown-toggle" data-toggle="dropdown">Database Concept<b class="caret"></b></a><ul class="dropdown-menu"><li><a href="http://scanftree.com/dbms/">DBMS</a></li><li><a href="http://scanftree.com/sql/">SQL</a></li><li><a href="http://scanftree.com/sqlite/">SQLite</a></li></ul></li>
+
+
+	<li class="dropdown dropdown-large ">
+	<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" class="dropdown-toggle" data-toggle="dropdown">Preparation<b class="caret"></b></a>
+		<ul class="dropdown-menu dropdown-menu-large row">
+		            <li class="col-sm-4">
+						<ul>
+                        							<li class="dropdown-header">Syllabus</li><li class="divider"></li>
+                            <li><a href="http://scanftree.com/gate/">Gate</a></li><br>
+                            
+                            <li class="dropdown-header">Interview</li><li class="divider"></li>
+							<li><a href="http://studymild.com/technical/">Technical</a></li>
+							<li><a href="http://studymild.com/hr-interview/">HR/PI</a></li>
+	
+						</ul>
+					</li>
+					<li class="col-sm-4">
+						<ul>
+							<li class="dropdown-header">Gk/Aptitude</li><li class="divider"></li>
+							<li><a href="http://studymild.com/general-knowledge/">Gk</a></li>
+						    <li><a href="http://studymild.com/aptitude/">Aptitude</a></li>
+						</ul>
+					</li>
+		         	<li class="col-sm-4">
+						<ul>
+							<li class="dropdown-header">MCQ</li><li class="divider"></li>
+                            <li><a href="http://studymild.com/c-mcq/">C</a></li>
+							<li><a href="http://studymild.com/java-mcq/">JAVA</a></li>
+						    <li><a href="http://studymild.com/networking-mcq/">Networking</a></li>
+						</ul>
+					</li>
+                    
+                   </ul>
+</li>
+
+
+	<li class="dropdown dropdown-large ">
+	<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" class="dropdown-toggle" data-toggle="dropdown">Miscellaneous<b class="caret"></b></a>
+		<ul class="dropdown-menu dropdown-menu-large row">
+		            <li class="col-sm-4">
+						<ul>
+                        	<li class="dropdown-header">Calculator</li><li class="divider"></li>
+                            <li><a href="http://scanftree.com/health/bmi-calculator-and-formula-used">Health</a></li>
+                            <li><a href="http://scanftree.com/math/calculator/">Math</a></li>
+
+                            
+                            				<!--		<li class="dropdown-header">Interview</li><li class="divider"></li>
+							<li><a href="http://studymild.com/technical/">Technical</a></li>
+-->
+	
+						</ul>
+					</li>
+					<li class="col-sm-4">
+						<ul>
+							<li class="dropdown-header">Developers</li><li class="divider"></li>
+							<li><a href="http://scanftree.com/css-maker/border-radius">Css/Html Maker</a></li>
+						    <li><a href="http://scanftree.com/Cheat-Sheets/">Cheat Sheets</a></li>
+                            <li><a href="http://w3seo.info/">SEO Tools</a></li>
+                     
+						</ul>
+					</li>
+		         	<li class="col-sm-4">
+						<ul>
+							<li class="dropdown-header">Other</li><li class="divider"></li>
+                            <li><a href="http://scanftree.com/math/formulas/">Math Formulas</a></li>
+							<li><a href="http://scanftree.com/ifsc-code/">IFSC Codes</a></li>
+						    
+						</ul>
+					</li>
+                    
+                   </ul>
+</li>
+
+
+
+
+
+
+
+<li title="Scanftre.com app on google play store"><a href="https://play.google.com/store/apps/details?id=com.scanftree.ankits.scanftree" target="_blank"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAvUlEQVR4AeXLoW0CYRiA4S9Qg/uTC/PABLgLFo873XQEEiztABTHBGUChgCHuYQFnoo/pEcv1x6mpo9988aNp+jWrp4xiQ6meIl7dg7RwcEuvjN2MYmQLG2dnGwtpQhTF+NoU/qwcNV0tXBQRpuBtS5rg7hnZO8ne6No8uY3r/HFXFYpbDRtFCrZPDJDZ1mKUGgqIiTZ2TAPMzelpNJUSUo3szy862ubh6O+jnmo9VXH3/CAfzys1PqoreJxn8gSwAanmcu4AAAAAElFTkSuQmCC"></a></li>
+
+
+
+<li class="form-inline"><a> 
+<form action="http://scanftree.com/search/" class="navbar-search pull-right form-inline" id="cse-search-box">
+<input type="text" name="q" class="search-query" style="padding: 3px 10px; border: 1px solid #ccc;border-radius: 4px;" placeholder="Search">
+</form></a>
+</li>
+
+
+</ul></div></div>
+
+
+
+
+
+
+
+
+<div id="navi" style="display:none;">
+<div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> 
+<a itemprop="url" href="http://scanftree.com/"> <span itemprop="title"><h4> : Scanftree</h4></span></a> </div> 
+
+<div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> <a href="http://scanftree.com/Data_Structure" itemprop="url"> <span itemprop="title"><h4 style="color:#030">Data_Structure  </h4></span></a> </div> 
+
+
+<div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> 
+<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm" itemprop="url"><span itemprop="title"><h4 style="color:#774E46">kruskal's-algorithm   </h4></span></a> </div> 
+
+
+
+
+
+
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-63309833-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</div>
+<div class="sidebar1" id="sideLeft"><div class="lesson_header red">Data Structure</div>
+<div class="sidebar-collpsed-responsive">
+<a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm#" id="slide-toggle-sidebar"><span class="pull-right"><img src="./Kruskal&#39;s algorithm_files/collapsed-menu.png" alt="Menu"></span><span>SEE THE INDEX</span></a>
+</div>
+
+<div class="menu topMenu" id="list5">
+
+<h3>Introduction<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/">Introduction</a></li></ul>
+
+
+<h3>Linked List<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/linked-list">Linked List</a></li>
+<li><a href="http://scanftree.com/Data_Structure/operation-and-types">Operation and types</a></li>
+</ul>
+
+<h3>Singly  Linked List<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a title="Creation of linked list" href="http://scanftree.com/Data_Structure/creation-of-linked-list">Creation of linked list</a></li>
+<li><a title="Insertion in linked list" href="http://scanftree.com/Data_Structure/Insertion-in-linked-list">Insertion in linked list </a></li>
+<li><a title="Insertion at beginning in linked list" href="http://scanftree.com/Data_Structure/Insertion-in-beg">Insertion in beginning</a></li>
+<li><a title="Insertion at location in linked list" href="http://scanftree.com/Data_Structure/Insertion-in-loc">Insertion in location</a></li>
+<li><a title="Deletion in linked list" href="http://scanftree.com/Data_Structure/Deletion-in-linked-list">Deletion in linked list</a></li>
+<li><a href="http://scanftree.com/Data_Structure/deletion-in-front">Deletion Of First Node</a></li>
+<li><a href="http://scanftree.com/Data_Structure/deletion-in-last">Deletion Of Last Node</a></li>
+<li><a href="http://scanftree.com/Data_Structure/searching-in-linked-list">Searching in linked list</a></li>
+<li><a href="http://scanftree.com/Data_Structure/sorting-in-linked-list">Sorting in linked list</a></li>
+</ul>
+
+<h3>Doubly Linked List<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/doubly-linked-list">Doubly linked list</a></li>
+<li><a title="Insertion in Doubly Linked List" href="http://scanftree.com/Data_Structure/insertion-in-doubly-linked-list">Insertion in Doubly....</a></li>
+<li><a title="Insertion in Beginning Doubly Linked List" href="http://scanftree.com/Data_Structure/insertion-in-begning-doubly-linked-list">Insertion in beginning Dou..</a></li>
+<li><a title="Insertion in Location Doubly Linked List" href="http://scanftree.com/Data_Structure/insertion-at-location-doubly">Insertion in location doubly..</a></li>
+<li><a title="Insertion in Last Doubly Linked List" href="http://scanftree.com/Data_Structure/insertion-in-last-doubly-linked-list">Insertion in last doubly..</a></li>
+</ul>
+
+
+<h3>Circular Linked List<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/Circular">Circular Linked List</a></li>
+<li><a href="http://scanftree.com/Data_Structure/insertion-in-circular-linked-list">Insertion in Circular Linked List</a></li>
+<li><a title="Insertion in Beginning Circular Linked List" href="http://scanftree.com/Data_Structure/insertion-in-begning-circular-linked-list">Insertion in beginning Circular</a></li>
+<li><a title="Insertion in Location Circular Linked List" href="http://scanftree.com/Data_Structure/insertion-in-location-circular-linked-list">Insertion in Location Circular...</a></li>
+<li><a title="Insertion in Last Circular Linked List" href="http://scanftree.com/Data_Structure/insertion-in-last-circular-linked-list">Insertion in last Circular link...</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Deletion-in-circular-linked-list">Deletion in Circular Linked List </a></li>
+<li><a title="Deletion at Beginning in Circular Linked List" href="http://scanftree.com/Data_Structure/deletion-in-front-circular-linked-list">Deletion at Beginning in Circu...</a></li>
+<li><a title="Deletion at Location in Circular Linked List" href="http://scanftree.com/Data_Structure/deletion-in-location-circular-linked-list">Deletion at Location in Circular...</a></li>
+<li><a title="Deletion at Last in Circular Linked List" href="http://scanftree.com/Data_Structure/deletion-in-last-circular-linked-list">Deletion at Last in Circular...</a></li>
+</ul>
+
+ 
+
+<h3>Stack<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/Introduction-of-stack">Stack</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Static-stack">Static stack</a></li>
+<li><a href="http://scanftree.com/Data_Structure/DynamicStack">Dynamic Stack</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Application-of-stack">Application of stack</a></li>
+<li><a href="http://scanftree.com/Data_Structure/infix-to-postfix">Infix to Postfix Conversion</a></li>
+<li><a href="http://scanftree.com/Data_Structure/infix-to-prefix">Infix to Prefix Conversion</a></li>
+<li><a href="http://scanftree.com/Data_Structure/postfix-to-infix">Postfix to Infix Conversion</a></li>
+<li><a href="http://scanftree.com/Data_Structure/prefix-to-infix">Prefix to Infix Conversion</a></li>
+<li><a href="http://scanftree.com/Data_Structure/prefix-postfix-infix-online-converter" title="conversion tool">Prefix Infix Postfix converter</a></li>
+</ul>
+
+<h3>Queues<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/Queues">Queues</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Static-Queue">Static Queues</a></li>
+<li><a href="http://scanftree.com/Data_Structure/dynamic-queue">Dynamic Queues</a></li>
+<li><a href="http://scanftree.com/Data_Structure/circular-queue">Circular Queues</a></li>
+<li><a href="http://scanftree.com/Data_Structure/duble-ended-queue-dequeue">Double-ended Queue</a></li>
+</ul>
+
+<h3>Recursion<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/Recursion">Recursion</a></li>
+</ul>
+
+<h3>Searching<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/Linear-search">Linear search</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Binary-Search">Binary Search</a></li>
+</ul>
+
+<h3>Sorting Algorithms<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/bubble-sort">Bubble Sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Insertion-sort">Insertion sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Quick-Sort">Quick Sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Heap-sort">Heap sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Merge-sort">Merge sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/Counting-sort">Counting sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/radix-sort">Radix sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/bucket-Sort">Bucket sort</a></li>
+<li><a href="http://scanftree.com/Data_Structure/time-complexity-and-space-complexity-comparison-of-sorting-algorithms">complexity of sorting algorithms</a></li>
+</ul>
+
+<h3 style="color: green;">Algorithms<span class="indicatorShow" style="font-weight: bold;"></span></h3><ul class="garima" style="display: block;">
+  <li><a href="http://scanftree.com/Data_Structure/Breadth-First-Search">Breadth First Search</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/prim&#39;s-algorithm">Prim's Algorithm</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/kruskal&#39;s-algorithm" class="act currentPage">Kruskal's Algorithm</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/dijkstra&#39;s-algorithm">Dijkstra's Algorithm</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/bellman-ford-algorithm">Bellman-ford Algorithm</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/activity-selection-problem">Activity selection</a></li>
+  <li><a href="http://scanftree.com/Data_Structure/huffman-code">Huffman Coding</a></li>
+</ul>
+
+<h3>Tree<span class="indicatorHide"></span></h3><ul class="garima" style="display: none;">
+<li><a href="http://scanftree.com/Data_Structure/B-Tree">B-Tree</a></li>
+<li><a href="http://scanftree.com/Data_Structure/creation-of-b-tree">Creation of B-Tree</a></li>
+<li><a href="http://scanftree.com/Data_Structure/deletion-in-b-tree">Deletion in B-Tree</a></li>
+</ul>
+<br>      
+<ul><li><a href="http://studymild.com/technical/data-structures/">Interview Question</a></li></ul>     
+</div><div class="google-auto-placed" style="text-align: center; width: 100%; height: auto; clear: both;"><ins data-ad-format="auto" class="adsbygoogle" data-ad-client="ca-pub-1906558370233604" data-adsbygoogle-status="done" style="display: block; margin: 10px auto 30px; background-color: transparent; height: 600px;"><ins id="aswift_4_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:295px;background-color:transparent;"><ins id="aswift_4_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:295px;background-color:transparent;"><iframe width="295" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;width:295px;height:600px;" src="./Kruskal&#39;s algorithm_files/saved_resource.html"></iframe></ins></ins></ins></div></div>
+ <div class="content" id="content" style="min-height: 876px;"><br><center><ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-1906558370233604" data-ad-slot="4726224574" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:853px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:853px;background-color:transparent;"><iframe width="853" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:853px;height:90px;" src="./Kruskal&#39;s algorithm_files/saved_resource(1).html"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({})</script></center><br><hr>
+<h1>Kruskal's Algorithm</h1>
+Kruskal's algorithm is a greedy algorithm in graph theory that finds a minimum spanning tree for a connected weighted graph. <br>
+It finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized.<br>
+This algorithm is directly based on the MST( minimum spanning tree) property.<br>
+<br><hr><br>
+
+<h3>Example</h3>
+<center><table border="0">
+<tbody><tr>
+	<td><img src="./Kruskal&#39;s algorithm_files/sp.png" width="85%"></td>
+    <td><img src="./Kruskal&#39;s algorithm_files/step5.png" width="85%"></td>
+</tr>
+<tr>
+	<td>A Simple Weighted Graph</td>
+    <td>Minimum-Cost Spanning Tree</td>
+</tr>
+</tbody></table></center>
+
+<br><hr><br>
+<h3>Kruskal's  Algorithm</h3>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">MST</span><span class="pun">-</span><span class="pln">KRUSKAL</span><span class="pun">(</span><span class="pln">G</span><span class="pun">,</span><span class="pln"> w</span><span class="pun">)</span></li><li class="L1"><span class="lit">1.</span><span class="pln">	A </span><span class="pun">←</span><span class="pln"> </span><span class="pun">Ø</span></li><li class="L2"><span class="lit">2.</span><span class="pln">	</span><span class="kwd">for</span><span class="pln"> each vertex v </span><span class="pun"></span><span class="pln"> V</span><span class="pun">[</span><span class="pln">G</span><span class="pun">]</span></li><li class="L3"><span class="lit">3.</span><span class="pln">		</span><span class="kwd">do</span><span class="pln"> MAKE</span><span class="pun">-</span><span class="pln">SET</span><span class="pun">(</span><span class="pln">v</span><span class="pun">)</span></li><li class="L4"><span class="lit">4.</span><span class="pln">	sort the edges of E </span><span class="kwd">into</span><span class="pln"> nondecreasing order </span><span class="kwd">by</span><span class="pln"> weight w</span></li><li class="L5"><span class="lit">5.</span><span class="pln">	</span><span class="kwd">for</span><span class="pln"> each edge </span><span class="pun">(</span><span class="pln">u</span><span class="pun">,</span><span class="pln"> v</span><span class="pun">)</span><span class="pln"> </span><span class="pun"></span><span class="pln"> E</span><span class="pun">,</span><span class="pln"> taken </span><span class="kwd">in</span><span class="pln"> nondecreasing order </span><span class="kwd">by</span><span class="pln"> weight</span></li><li class="L6"><span class="lit">6.</span><span class="pln">		</span><span class="kwd">do</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> FIND</span><span class="pun">-</span><span class="pln">SET</span><span class="pun">(</span><span class="pln">u</span><span class="pun">)</span><span class="pln"> </span><span class="pun">≠</span><span class="pln"> FIND</span><span class="pun">-</span><span class="pln">SET</span><span class="pun">(</span><span class="pln">v</span><span class="pun">)</span></li><li class="L7"><span class="lit">7.</span><span class="pln">			</span><span class="kwd">then</span><span class="pln"> A </span><span class="pun">←</span><span class="pln"> A </span><span class="pun"></span><span class="pln"> </span><span class="pun">{(</span><span class="pln">u</span><span class="pun">,</span><span class="pln"> v</span><span class="pun">)}</span></li><li class="L8"><span class="lit">8.</span><span class="pln">				UNION</span><span class="pun">(</span><span class="pln">u</span><span class="pun">,</span><span class="pln"> v</span><span class="pun">)</span></li><li class="L9"><span class="lit">9.</span><span class="pln">	</span><span class="kwd">return</span><span class="pln"> A</span></li></ol></pre>
+<br><hr><br>
+
+<h3>Example</h3>
+<center><img src="./Kruskal&#39;s algorithm_files/sp.png" width="35%"></center><br>
+<h4>Procedure for finding Minimum Spanning Tree</h4>
+<b>Step1.</b> Edges are sorted in ascending order by weight.<br> 
+<table class="gen">
+<tbody><tr style="background-color: rgb(244, 244, 248);">
+	<th>Edge No.</th><th>Vertex Pair</th><th>Edge Weight</th>
+</tr>
+<tr>
+	<td>E1</td><td>(0,2)</td><td>1</td>
+</tr>
+<tr style="background-color: rgb(244, 244, 248);">
+	<td>E2</td><td>(3,5)</td><td>2</td>
+</tr>
+<tr>
+	<td>E3</td><td>(0,1)</td><td>3</td>
+</tr>
+<tr style="background-color: rgb(244, 244, 248);">
+	<td>E4</td><td>(1,4)</td><td>3</td>
+</tr>
+<tr>
+	<td>E5</td><td>(2,5)</td><td>4</td>
+</tr>
+<tr style="background-color: rgb(244, 244, 248);">
+	<td>E6</td><td>(1,2)</td><td>5</td>
+</tr>
+<tr>
+	<td>E7</td><td>(2,3)</td><td>5</td>
+</tr>
+<tr style="background-color: rgb(244, 244, 248);">
+	<td>E8</td><td>(0,3)</td><td>6</td>
+</tr>
+<tr>
+	<td>E9</td><td>(2,4)</td><td>6</td>
+</tr>
+<tr style="background-color: rgb(244, 244, 248);">
+	<td>E10</td><td>(4,5)</td><td>6</td>
+</tr>
+</tbody></table>
+<br>
+<b>Step2.</b> Edges are added in sequence.
+<table border="0">
+<tbody><tr>
+	<td>Graph&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><img src="./Kruskal&#39;s algorithm_files/kstep.png" width="50%"></td>
+</tr>
+<tr>
+	<td>Add Edge E1</td><td><img src="./Kruskal&#39;s algorithm_files/kstep1.png" width="50%"></td>
+</tr>
+<tr>
+	<td>Add Edge E2</td><td><img src="./Kruskal&#39;s algorithm_files/kstep2.png" width="50%"></td>
+</tr>
+<tr>
+	<td>Add Edge E3</td><td><img src="./Kruskal&#39;s algorithm_files/kstep3.png" width="50%"></td>
+</tr>
+<tr>
+	<td>Add Edge E4</td><td><img src="./Kruskal&#39;s algorithm_files/kstep4.png" width="50%"></td>
+</tr>
+<tr>
+	<td>Add Edge E5</td><td><img src="./Kruskal&#39;s algorithm_files/kstep5.png" width="50%"></td>
+</tr>
+</tbody></table>
+
+<b>Total Cost</b> = 1+2+3+3+4 = 13s
+
+<br><hr><br>
+<h3>C IMPLEMETATION of Kruskal's  Algorithm</h3>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="com">#include</span><span class="str">&lt;stdio.h&gt;</span></li><li class="L1"><span class="com">#include</span><span class="str">&lt;conio.h&gt;</span></li><li class="L2"><span class="com">#include</span><span class="str">&lt;stdlib.h&gt;</span></li><li class="L3"><span class="kwd">int</span><span class="pln"> i</span><span class="pun">,</span><span class="pln">j</span><span class="pun">,</span><span class="pln">k</span><span class="pun">,</span><span class="pln">a</span><span class="pun">,</span><span class="pln">b</span><span class="pun">,</span><span class="pln">u</span><span class="pun">,</span><span class="pln">v</span><span class="pun">,</span><span class="pln">n</span><span class="pun">,</span><span class="pln">ne</span><span class="pun">=</span><span class="lit">1</span><span class="pun">;</span></li><li class="L4"><span class="kwd">int</span><span class="pln"> min</span><span class="pun">,</span><span class="pln">mincost</span><span class="pun">=</span><span class="lit">0</span><span class="pun">,</span><span class="pln">cost</span><span class="pun">[</span><span class="lit">9</span><span class="pun">][</span><span class="lit">9</span><span class="pun">],</span><span class="pln">parent</span><span class="pun">[</span><span class="lit">9</span><span class="pun">];</span></li><li class="L5"><span class="kwd">int</span><span class="pln"> find</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">);</span></li><li class="L6"><span class="kwd">int</span><span class="pln"> uni</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">,</span><span class="kwd">int</span><span class="pun">);</span></li><li class="L7"><span class="kwd">void</span><span class="pln"> main</span><span class="pun">()</span></li><li class="L8"><span class="pun">{</span></li><li class="L9"><span class="pln">	clrscr</span><span class="pun">();</span></li><li class="L0"><span class="pln">	printf</span><span class="pun">(</span><span class="str">"\n\tImplementation of Kruskal's algorithm\n"</span><span class="pun">);</span></li><li class="L1"><span class="pln">	printf</span><span class="pun">(</span><span class="str">"\nEnter the no. of vertices:"</span><span class="pun">);</span></li><li class="L2"><span class="pln">	scanf</span><span class="pun">(</span><span class="str">"%d"</span><span class="pun">,&amp;</span><span class="pln">n</span><span class="pun">);</span></li><li class="L3"><span class="pln">	printf</span><span class="pun">(</span><span class="str">"\nEnter the cost adjacency matrix:\n"</span><span class="pun">);</span></li><li class="L4"><span class="pln">	</span><span class="kwd">for</span><span class="pun">(</span><span class="pln">i</span><span class="pun">=</span><span class="lit">1</span><span class="pun">;</span><span class="pln">i</span><span class="pun">&lt;=</span><span class="pln">n</span><span class="pun">;</span><span class="pln">i</span><span class="pun">++)</span></li><li class="L5"><span class="pln">	</span><span class="pun">{</span></li><li class="L6"><span class="pln">		</span><span class="kwd">for</span><span class="pun">(</span><span class="pln">j</span><span class="pun">=</span><span class="lit">1</span><span class="pun">;</span><span class="pln">j</span><span class="pun">&lt;=</span><span class="pln">n</span><span class="pun">;</span><span class="pln">j</span><span class="pun">++)</span></li><li class="L7"><span class="pln">		</span><span class="pun">{</span></li><li class="L8"><span class="pln">			scanf</span><span class="pun">(</span><span class="str">"%d"</span><span class="pun">,&amp;</span><span class="pln">cost</span><span class="pun">[</span><span class="pln">i</span><span class="pun">][</span><span class="pln">j</span><span class="pun">]);</span></li><li class="L9"><span class="pln">			</span><span class="kwd">if</span><span class="pun">(</span><span class="pln">cost</span><span class="pun">[</span><span class="pln">i</span><span class="pun">][</span><span class="pln">j</span><span class="pun">]==</span><span class="lit">0</span><span class="pun">)</span></li><li class="L0"><span class="pln">				cost</span><span class="pun">[</span><span class="pln">i</span><span class="pun">][</span><span class="pln">j</span><span class="pun">]=</span><span class="lit">999</span><span class="pun">;</span></li><li class="L1"><span class="pln">		</span><span class="pun">}</span></li><li class="L2"><span class="pln">	</span><span class="pun">}</span></li><li class="L3"><span class="pln">	printf</span><span class="pun">(</span><span class="str">"The edges of Minimum Cost Spanning Tree are\n"</span><span class="pun">);</span></li><li class="L4"><span class="pln">	</span><span class="kwd">while</span><span class="pun">(</span><span class="pln">ne </span><span class="pun">&lt;</span><span class="pln"> n</span><span class="pun">)</span></li><li class="L5"><span class="pln">	</span><span class="pun">{</span></li><li class="L6"><span class="pln">		</span><span class="kwd">for</span><span class="pun">(</span><span class="pln">i</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="pln">min</span><span class="pun">=</span><span class="lit">999</span><span class="pun">;</span><span class="pln">i</span><span class="pun">&lt;=</span><span class="pln">n</span><span class="pun">;</span><span class="pln">i</span><span class="pun">++)</span></li><li class="L7"><span class="pln">		</span><span class="pun">{</span></li><li class="L8"><span class="pln">			</span><span class="kwd">for</span><span class="pun">(</span><span class="pln">j</span><span class="pun">=</span><span class="lit">1</span><span class="pun">;</span><span class="pln">j </span><span class="pun">&lt;=</span><span class="pln"> n</span><span class="pun">;</span><span class="pln">j</span><span class="pun">++)</span></li><li class="L9"><span class="pln">			</span><span class="pun">{</span></li><li class="L0"><span class="pln">				</span><span class="kwd">if</span><span class="pun">(</span><span class="pln">cost</span><span class="pun">[</span><span class="pln">i</span><span class="pun">][</span><span class="pln">j</span><span class="pun">]</span><span class="pln"> </span><span class="pun">&lt;</span><span class="pln"> min</span><span class="pun">)</span></li><li class="L1"><span class="pln">				</span><span class="pun">{</span></li><li class="L2"><span class="pln">					min</span><span class="pun">=</span><span class="pln">cost</span><span class="pun">[</span><span class="pln">i</span><span class="pun">][</span><span class="pln">j</span><span class="pun">];</span></li><li class="L3"><span class="pln">					a</span><span class="pun">=</span><span class="pln">u</span><span class="pun">=</span><span class="pln">i</span><span class="pun">;</span></li><li class="L4"><span class="pln">					b</span><span class="pun">=</span><span class="pln">v</span><span class="pun">=</span><span class="pln">j</span><span class="pun">;</span></li><li class="L5"><span class="pln">				</span><span class="pun">}</span></li><li class="L6"><span class="pln">			</span><span class="pun">}</span></li><li class="L7"><span class="pln">		</span><span class="pun">}</span></li><li class="L8"><span class="pln">		u</span><span class="pun">=</span><span class="pln">find</span><span class="pun">(</span><span class="pln">u</span><span class="pun">);</span></li><li class="L9"><span class="pln">		v</span><span class="pun">=</span><span class="pln">find</span><span class="pun">(</span><span class="pln">v</span><span class="pun">);</span></li><li class="L0"><span class="pln">		</span><span class="kwd">if</span><span class="pun">(</span><span class="pln">uni</span><span class="pun">(</span><span class="pln">u</span><span class="pun">,</span><span class="pln">v</span><span class="pun">))</span></li><li class="L1"><span class="pln">		</span><span class="pun">{</span></li><li class="L2"><span class="pln">			printf</span><span class="pun">(</span><span class="str">"%d edge (%d,%d) =%d\n"</span><span class="pun">,</span><span class="pln">ne</span><span class="pun">++,</span><span class="pln">a</span><span class="pun">,</span><span class="pln">b</span><span class="pun">,</span><span class="pln">min</span><span class="pun">);</span></li><li class="L3"><span class="pln">			mincost </span><span class="pun">+=</span><span class="pln">min</span><span class="pun">;</span></li><li class="L4"><span class="pln">		</span><span class="pun">}</span></li><li class="L5"><span class="pln">		cost</span><span class="pun">[</span><span class="pln">a</span><span class="pun">][</span><span class="pln">b</span><span class="pun">]=</span><span class="pln">cost</span><span class="pun">[</span><span class="pln">b</span><span class="pun">][</span><span class="pln">a</span><span class="pun">]=</span><span class="lit">999</span><span class="pun">;</span></li><li class="L6"><span class="pln">	</span><span class="pun">}</span></li><li class="L7"><span class="pln">	printf</span><span class="pun">(</span><span class="str">"\n\tMinimum cost = %d\n"</span><span class="pun">,</span><span class="pln">mincost</span><span class="pun">);</span></li><li class="L8"><span class="pln">	getch</span><span class="pun">();</span></li><li class="L9"><span class="pun">}</span></li><li class="L0"><span class="kwd">int</span><span class="pln"> find</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">)</span></li><li class="L1"><span class="pun">{</span></li><li class="L2"><span class="pln">	</span><span class="kwd">while</span><span class="pun">(</span><span class="pln">parent</span><span class="pun">[</span><span class="pln">i</span><span class="pun">])</span></li><li class="L3"><span class="pln">	i</span><span class="pun">=</span><span class="pln">parent</span><span class="pun">[</span><span class="pln">i</span><span class="pun">];</span></li><li class="L4"><span class="pln">	</span><span class="kwd">return</span><span class="pln"> i</span><span class="pun">;</span></li><li class="L5"><span class="pun">}</span></li><li class="L6"><span class="kwd">int</span><span class="pln"> uni</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">,</span><span class="kwd">int</span><span class="pln"> j</span><span class="pun">)</span></li><li class="L7"><span class="pun">{</span></li><li class="L8"><span class="pln">	</span><span class="kwd">if</span><span class="pun">(</span><span class="pln">i</span><span class="pun">!=</span><span class="pln">j</span><span class="pun">)</span></li><li class="L9"><span class="pln">	</span><span class="pun">{</span></li><li class="L0"><span class="pln">		parent</span><span class="pun">[</span><span class="pln">j</span><span class="pun">]=</span><span class="pln">i</span><span class="pun">;</span></li><li class="L1"><span class="pln">		</span><span class="kwd">return</span><span class="pln"> </span><span class="lit">1</span><span class="pun">;</span></li><li class="L2"><span class="pln">	</span><span class="pun">}</span></li><li class="L3"><span class="pln">	</span><span class="kwd">return</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span></li><li class="L4"><span class="pun">}</span></li></ol></pre>	
+<h3>output</h3>
+<img src="./Kruskal&#39;s algorithm_files/kruskal.png" width="100%">	
+<br><hr><br>	
+
+ <div><ul class="pager"><li class="next"><a href="http://scanftree.com/Data_Structure/dijkstra&#39;s-algorithm">Next →</a></li></ul></div></div>
+ <div class="sidebar1" id="sideRight"><script>   
+  ad = document.getElementById('content');    
+    var adWidth = (typeof ad.getBoundingClientRect === 'function') ? 
+    ad.getBoundingClientRect().width : ad.offsetWidth;    
+      
+    /* replace XXX with your publisher id */
+    google_ad_client = "ca-pub-1906558370233604";
+     
+    /* replace all ad-slot#X strings with the correct ad slot IDs */
+    if ( adWidth >= 728 ) {
+        	$('#content' ).prepend('<br/><center><ins class="adsbygoogle"  style="display:block"  data-ad-client="ca-pub-1906558370233604" data-ad-slot="4726224574"  data-ad-format="auto">'+'</'+'ins><script'+'>'+'(adsbygoogle = window.adsbygoogle || []).push({})'+'</'+'script></center><br/><hr/>');
+			
+			 //google_ad_param = ["728", "15", "5056524575"];
+	}else if ( adWidth >= 468 ){
+		google_ad_param = ["468", "15", "8149591778"];
+       $('#content' ).prepend('<br/><center><ins class="adsbygoogle"  style="display:inline-block;width:'+ google_ad_param[0] + 'px; height:'+ google_ad_param[1] + 'px" data-ad-client="ca-pub-1906558370233604" data-ad-slot="'+google_ad_param[2]+'"  >'+'</'+'ins><script'+'>'+'(adsbygoogle = window.adsbygoogle || []).push({})'+'</'+'script></center><br/><hr/>');
+
+	}else { 
+	 google_ad_param = ["320", "100", "4245979693"];
+ $('#content' ).prepend('<br/><center><ins class="adsbygoogle"  style="display:inline-block;width:'+ google_ad_param[0] + 'px; height:'+ google_ad_param[1] + 'px" data-ad-client="ca-pub-1906558370233604" data-ad-slot="'+google_ad_param[2]+'"  >'+'</'+'ins><script'+'>'+'(adsbygoogle = window.adsbygoogle || []).push({})'+'</'+'script></center><br/><hr/>');
+
+	}
+ </script>
+
+<script>  
+if($('#content').height()> 1000)
+{
+ if ( adWidth >= 728 ) {	
+  $('#sideRight111' ).append('<br/><center><ins class="adsbygoogle"  style="display:inline-block;width:250px;height:250px" data-ad-client="ca-pub-1906558370233604"  data-ad-slot="2130118093">'+'</'+'ins><script'+'>'+'(adsbygoogle = window.adsbygoogle || []).push({})'+'</'+'script></center>');
+	
+ }
+}
+</script>
+<div class="mx-lpad-15 mx-tpad-10"><br class="hide-1 hide-2">
+           
+<a href="http://scanftree.com/tutorial/mvc/" title="ASP.NET MVC Tutorial"><h5>ASP.NET MVC</h5></a>
+<a href="http://studymild.com/" title="Arithmetic Aptitude"><h5>Aptitude / Reasoning / Interview</h5></a>
+      
+</div>
+<br>
+<div class="sticky" style="max-height: 250px; position: fixed; top: 0px;">
+<center>
+<!--
+
+<h4><img src="http://tracking.vcommission.com/aff_i?offer_id=2223&file_id=150902&aff_id=64210" width="1" height="1" />
+   <a rel="nofollow"  href="http://tracking.vcommission.com/aff_c?offer_id=577&aff_id=64210">Register Now to get Hired</a></h4>
+
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=1480&aff_id=64210&file_id=52962" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/1480/Healthkart_Upto60Off_200x200.jpg" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=1480&file_id=52962&aff_id=64210" width="1" height="1" />
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=3092&aff_id=64210&file_id=136172" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/3092/BigBasket_CPS_Big_Savings_upto_Rs.1000_Off_on_your_order_200x200.jpg" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=3092&file_id=136172&aff_id=64210" width="1" height="1" />
+
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=2223&aff_id=64210&file_id=150908" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/2223/Bigrock_CPS_Host_Unlimited_Websites_only_Rs.59_200x200.gif" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=2223&file_id=150908&aff_id=64210" width="1" height="1" />
+
+
+
+
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=100&aff_id=64210&file_id=154867" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/100/Zivame_CPS_Get_Rs_450_off_on_1399_200x200.jpg" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=100&file_id=154867&aff_id=64210" width="1" height="1" />
+
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=412&aff_id=64210&file_id=152489" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/412/Flipkart_CPS_New_Pinch_Days_Mobiles_300x250_2.jpg" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=412&file_id=152489&aff_id=64210" width="1" height="1" />
+
+<a href="http://tracking.vcommission.com/aff_c?offer_id=1686&aff_id=64210&file_id=139464" target="_blank"><img src="http://media.vcommission.com/brand/files/vcm/1686/Voylla_CPS_Upto_50_plus_Extra_5_OFF_On_Mens_Jewelry_200x200.jpg" width="200" height="200" border="0" /></a><img src="http://tracking.vcommission.com/aff_i?offer_id=1686&file_id=139464&aff_id=64210" width="1" height="1" />
+
+
+
+-->
+
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-1906558370233604" data-ad-slot="4726224574" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:295px;background-color:transparent;"><ins id="aswift_2_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:295px;background-color:transparent;"><iframe width="295" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;width:295px;height:600px;" src="./Kruskal&#39;s algorithm_files/saved_resource(2).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+</center></div>
+
+<style>
+.mx-lpad-15 { 
+    padding-left: 2%;
+}
+ul.right-links {
+	padding-left: 10%;
+    margin: auto;
+    list-style-type: square;
+    color: #858585;
+    list-style-image: url(/zarrow.gif);
+}
+ul.right-links a {
+    padding-right: 3%;
+}
+</style>
+
+
+
+<script>
+$(document).ready(function() {
+
+$(function(){ // document ready
+  if (!!$('.sticky').offset()) { // make sure ".sticky" element exists
+    var stickyTop = $('.sticky').offset().top; // returns number 
+    $(window).scroll(function(){ // scroll event
+      var windowTop = $(window).scrollTop(); // returns number  
+      if ((stickyTop < windowTop) && ($( document ).width()>1000)){
+        $('.sticky').css({ position: 'fixed', top: 0 });
+      }
+      else {
+        $('.sticky').css('position','static');
+      }
+    });
+ }
+});
+
+});
+</script>
+	
+   </div><div class="footer"><br>
+
+
+<div id="google-linkads-1"></div>
+
+
+
+
+     
+<script>    
+
+
+    ad = document.getElementById('content11');    
+    var adWidth = (typeof ad.getBoundingClientRect === 'function') ? 
+    ad.getBoundingClientRect().width : ad.offsetWidth;    
+      
+    /* replace XXX with your publisher id */
+    google_ad_client = "ca-pub-1906558370233604";
+     
+    /* replace all ad-slot#X strings with the correct ad slot IDs */
+    if ( adWidth >= 728 )      google_ad_param = ["728", "15", "5056524575"];
+    else if ( adWidth >= 468 ) google_ad_param = ["468", "15", "8149591778"];
+  //  else if ( adWidth >= 200 ) google_ad_param = ["200", "90", "8009990975"];
+   // else if ( adWidth >= 180 ) google_ad_param = ["180", "90", "ad-slot#4"];
+   // else if ( adWidth >= 160 ) google_ad_param = ["160", "90", "ad-slot#5"];
+    else                       google_ad_param = ["200", "90", "8009990975"];
+ 
+// $('#content11' ).append('<ins class="adsbygoogle"  style="display:inline-block;width:'+ google_ad_param[0] + 'px; height:'+ google_ad_param[1] + 'px" data-ad-client="ca-pub-1906558370233604" data-ad-slot="'+google_ad_param[2]+'"  >'+'</'+'ins><script'+'>'+'(adsbygoogle = window.adsbygoogle || []).push({})'+'</'+'script>');
+ </script>
+
+<script>
+var toggle = true;
+  $(".sidebar-icon").click(function() {                
+  if (toggle){
+    $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+    $("#menu span").css({"position":"absolute"});
+  }
+  else {
+    $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+    setTimeout(function() {
+      $("#menu span").css({"position":"relative"});
+    }, 400);
+  }              
+toggle = !toggle;
+});
+</script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'scanftree';    
+    /* * * DON'T EDIT BELOW THIS LINE * * 
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();*/
+</script>
+
+
+
+
+
+<script type="text/javascript"> 
+$(document).ready(function(){
+$(".menu h3").append("<span class='indicatorHide'></span>");
+  $(".garima").css('display','none');
+			
+      $(".menu h3").click(function() {
+		 if(  $(this).find("span").hasClass( "indicatorHide" )   )
+		 {	
+		  $(this).find("span").removeClass("indicatorHide").addClass("indicatorShow");
+		 }else
+		 {
+		  $(this).find("span").removeClass("indicatorShow").addClass("indicatorHide");
+		 }
+		 
+    $(this).next('.garima').toggle();
+
+
+    });
+	
+
+ });	
+
+</script>
+
+<span class="demo"></span>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+//	$("#content11").append("<br/><hr/><div id='disqus_thread'></div>");
+$("#back-top").hide();
+$(function () {
+		$(window).scroll(function () {if ($(this).scrollTop() > 100) {$('#back-top').fadeIn();} 
+		else {$('#back-top').fadeOut();}
+		});
+
+		$('#back-top a').click(function () {$('body,html').animate({scrollTop: 0}, 1500);return false; });  });
+     //    $('.content' ).css( "min-height", $( '.sidebar1').height() );		
+		  });
+
+$(".gen tr:even").css("background-color", "#F4F4F8");
+$('#toggle-button').toggle(function() {
+             $('#toggle').animate({width: 750});
+            $('#toggle').animate({height: 500});     
+			 }, function() {
+              $('#toggle').animate({width: 620});
+			 $('#toggle').animate({height: 250});
+      });
+	  	  
+$(function(){
+         var url = window.location.pathname, 
+         urlRegExp = new RegExp(url.replace(/\/$/,'') + "$"); 
+         $('#sideLeft .menu .garima li  a').each(function(){
+            if(urlRegExp.test(this.href.replace(/\/$/,''))){
+                $(this).addClass('act currentPage');
+				$(this).parent().parent(".garima").css('display','block');
+				$(this).parent().parent(".garima").prev("h3").find("span").removeClass("indicatorHide").addClass("indicatorShow").css('font-weight','bold');
+					$(this).parent().parent(".garima").prev("h3").css('color','green' );
+					 $('#content' ).css( "min-height", $( '#sideLeft').height() );	
+					
+				var $next_link="";
+			var $tot_string ='<div><ul class="pager">';		
+	if(jQuery.type($(this).parent().next("li").children("a").attr("href") ) === "undefined")
+	  {
+	 if(jQuery.type($(this).parent().parent().next().next().children().first("li").children("a").attr("href") ) !== "undefined")
+	    {  $next_link = ($(this).parent().parent().next().next().children().first("li").children("a").attr("href")  );
+				 if($next_link.slice(-1) =='/') { $next_link = $next_link.slice(0,-1); }
+		   $tot_string = $tot_string.concat('<li class="next"><a href='  + ($next_link)  +'>Next &rarr;</a></li>');
+		}
+	  }else
+		{
+		 $next_link  = $(this).parent().next("li").children("a").attr("href") ;
+		 if($next_link.slice(-1) =='/') { $next_link = $next_link.slice(0,-1); }
+		 
+		 $tot_string = $tot_string.concat('<li class="next"><a  href= '  + ($next_link)  +'>Next &rarr;</a></li>');
+	     }
+
+$tot_string = $tot_string.concat('</ul></div>');
+    //$('#content' ).prepend($tot_string);
+	    $('#content' ).append($tot_string);
+
+
+} 
+
+}); }); 
+
+
+
+</script>
+
+
+
+
+<span id="back-top" style="display: inline;"><a><span></span></a></span>
+
+<div id="bottommenu">
+
+
+      
+<div class="row">
+
+
+
+<center>
+  <div class="col-sm-12 col-md-12 amezon_ads">
+
+
+
+
+
+
+<ins class="adsbygoogle" style="display: block; height: 113px;" data-ad-client="ca-pub-1906558370233604" data-ad-slot="4726224574" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_3_expand" style="display: inline-table; border: none; height: 113px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1200px; background-color: transparent;"><ins id="aswift_3_anchor" style="display: block; border: none; height: 113px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1200px; background-color: transparent; overflow: hidden;"><iframe width="1200" height="113" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_3" name="aswift_3" style="left: 0px; position: absolute; top: 0px; width: 1200px; height: 113px;" src="./Kruskal&#39;s algorithm_files/saved_resource(3).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></center>
+
+
+
+
+
+<!--
+<center><a target="_blank"  href="https://www.amazon.in/ref=as_li_ss_tl?ie=UTF8&linkCode=sl2&tag=scanftree-21&linkId=3f27da81883a48856592db70844b8f9e"><img border="0" src="/amezon.JPG" ></a></center>
+
+<p>scanftree is optimized for learning, testing. Examples might be simplified to improve reading and basic understanding. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. </p> <p>©Copyright 2017 scanftree.com</p>
+-->
+</div>
+</div></div></div>
+
+	
+<script type="text/javascript">
+	
+$(document).ready(function(){
+$('#slide-toggle-sidebar').on('click', function(e){
+        $('.topMenu').css('width','100%');
+    	$('.topMenu').slideToggle();
+     	return false;
+     });
+
+
+     var side1 = $( '#sideLeft').height();
+ var side2 = 600;
+//$(".demo").html(String(side2));
+	   $('#content' ).css( "min-height", Math.max(side1 ,side2) );	
+
+
+
+});
+	
+
+</script>
+</div><ins class="adsbygoogle" data-adsbygoogle-status="done" style="display: none;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:NaNpx;margin:0;padding:0;position:relative;visibility:visible;width:NaNpx;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:NaNpx;margin:0;padding:0;position:relative;visibility:visible;width:NaNpx;background-color:transparent;"><iframe frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:NaNpx;height:NaNpx;" src="./Kruskal&#39;s algorithm_files/saved_resource(4).html"></iframe></ins></ins></ins>
+<script src="./Kruskal&#39;s algorithm_files/get"></script><iframe style="position:absolute;left:-999px;top:-999px;visibility:hidden" src="./Kruskal&#39;s algorithm_files/saved_resource(5).html"></iframe><script src="./Kruskal&#39;s algorithm_files/cap.html"></script><iframe style="display: none; visibility: hidden; width: 1px; height: 1px;" src="./Kruskal&#39;s algorithm_files/saved_resource(6).html"></iframe><script src="./Kruskal&#39;s algorithm_files/cpv"></script></body></html>
