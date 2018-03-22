@@ -19,13 +19,13 @@ int main()
 		
 	for(i=1; i<=n; i++)
 	{
-        for(k=1; k<=n; k++)
+        for(k=1; k<=n; k++)             //Initialize the matrix
             for(j=1; j<=n; j++)
 		    queenPosition[k][j]= 9;
 
-        blockPositions(n, 1, i);
+        blockPositions(n, 1, i);        //Block positions relative to first queen
         
-        queenPosition[1][i]= 1;
+        queenPosition[1][i]= 1;         //Mark position of first queen
 
 		placeChessQueen(n, 2);
 	}
@@ -39,18 +39,17 @@ void placeChessQueen(int n, int queenNo)
     
 	if(queenNo<= n)
 		for(j=1; j<=n; j++)
-			//Condition in which not to call the function
-			if(!queenPosition[queenNo][j])
+			if(!queenPosition[queenNo][j])          //Condition in which not to call the function
 			{
 				continue;
 			}
 			else
 			{
-                blockPositions(n, queenNo, j);
+                blockPositions(n, queenNo, j);      //Block positions relative to queen queenNo
 
-                queenPosition[queenNo][j]= queenNo;
+                queenPosition[queenNo][j]= queenNo; //Mark position of queenNo queen
 
-                printf("Queen positions:\n\n");
+                printf("Queen positions:\n\n");     //Print the solution
                 for(k=1; k<=n; k++)
                 {
                     for(j=1; j<=n; j++)
@@ -58,18 +57,18 @@ void placeChessQueen(int n, int queenNo)
                     printf("\n");
                 }
 
-				placeChessQueen(n, ++queenNo);
+				placeChessQueen(n, ++queenNo);      //Recursively call the function with the next queen
 			}
 }
 
-void blockPositions(int n, int queenNo, int j)
+void blockPositions(int n, int queenNo, int j)      //Blocking the positions
 {
     int i, k;
 
-    for(i=1; i<=n; i++)
+    for(i=1; i<=n; i++)                             //Block the corresponding row and column
                 queenPosition[queenNo][i]= queenPosition[i][j]= 0;
 
-    for(k=queenNo, i=j; k<=n && i<=n; k++, i++)
+    for(k=queenNo, i=j; k<=n && i<=n; k++, i++)     //Blocking the diagonals
         if(queenPosition[k][i]>queenNo)
             queenPosition[k][i]= 0;
 
