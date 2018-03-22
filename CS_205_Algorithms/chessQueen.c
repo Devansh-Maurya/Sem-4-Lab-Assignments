@@ -1,3 +1,5 @@
+//For correct solution, see queenFinal.c
+
 #include<stdio.h>
 
 #define S 10
