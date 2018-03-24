@@ -37,6 +37,14 @@ void placeChessQueen(int n, int queenNo)
 {
 	int j, k;
     
+    printf("Queen positions:\n\n");     //Print the solution
+                for(k=1; k<=n; k++)
+                {
+                    for(j=1; j<=n; j++)
+                        printf("%d ", queenPosition[k][j]);
+                    printf("\n");
+                }
+                
 	if(queenNo<= n)
 		for(j=1; j<=n; j++)
 			if(!queenPosition[queenNo][j])          //Condition in which not to call the function
@@ -49,13 +57,7 @@ void placeChessQueen(int n, int queenNo)
 
                 queenPosition[queenNo][j]= queenNo; //Mark position of queenNo queen
 
-                printf("Queen positions:\n\n");     //Print the solution
-                for(k=1; k<=n; k++)
-                {
-                    for(j=1; j<=n; j++)
-                        printf("%d ", queenPosition[k][j]);
-                    printf("\n");
-                }
+                
 
 				placeChessQueen(n, ++queenNo);      //Recursively call the function with the next queen
 			}
