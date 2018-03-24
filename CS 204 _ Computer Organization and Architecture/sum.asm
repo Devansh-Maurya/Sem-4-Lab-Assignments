@@ -1,7 +1,7 @@
 .data
 
 msg1: .asciiz "Enter first number: "
-msg2: .asciiz "Ënter second number: "
+msg2: .asciiz "Enter second number: "
 addmsg: .asciiz "The sum is: "
 
 .text
