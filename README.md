@@ -1,5 +1,3 @@
-# [Sem 4 Lab Assignments](https://github.com/Devansh-Maurya/Sem-4-Lab-Assignments)
-
 Contains assignments on the following courses:
 
 1) CS204 : Computer Organization and Architecture 
