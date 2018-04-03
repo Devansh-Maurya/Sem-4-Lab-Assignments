@@ -67,7 +67,7 @@ bool positionIsAvailable(int totalQueens, int queenNo, int column)
 {
     int queen, itsColumn;
 
-    //Check if new queen has been placed in an attacking row
+    //Check if new queen has been placed in an attacking column
     for(queen=1; queen< queenNo; queen++)
         if(queenPosition[queen][column])
             return false;
