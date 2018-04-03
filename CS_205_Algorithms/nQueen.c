@@ -43,23 +43,23 @@ void placeChessQueen(int totalQueens, int queenNo)
 	int column;
     
     //If last queen has been placed, then print the solution
-	if(queenNo== totalQueens+1)                             
+    if(queenNo== totalQueens+1)                             
     {
         printPositions(totalQueens);
     }
-    
-    for(column=1; column<= totalQueens; column++)
-        if(positionIsAvailable(totalQueens, queenNo, column))
-        {
-            //Place the queen
-            queenPosition[queenNo][column]= 1;              
+    else
+		for(column=1; column<= totalQueens; column++)
+		if(positionIsAvailable(totalQueens, queenNo, column))
+		{
+			//Place the queen
+			queenPosition[queenNo][column]= 1;              
 
-            //Try to place the next queen
-            placeChessQueen(totalQueens, queenNo+1);        
-            
-            //Backtrack to check other solutions
-            queenPosition[queenNo][column]= 0;             
-        }
+			//Try to place the next queen
+			placeChessQueen(totalQueens, queenNo+1);        
+
+			//Backtrack to check other solutions
+			queenPosition[queenNo][column]= 0;             
+		}
 }
 
 
