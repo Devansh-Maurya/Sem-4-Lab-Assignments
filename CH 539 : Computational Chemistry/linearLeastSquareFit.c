@@ -20,8 +20,10 @@ int main()
 		scanf(" %f",&y[i]);
 		printf("\n");
 	}
+
+	//All the variables are the coefficients of Alpha. beta or alphabeta from the initial equation
 	
-	squareY=0;
+	squareY=0;					//Not needed
 	for(i=0; i<n; i++)
 		squareY+=y[i]*y[i];
 	
