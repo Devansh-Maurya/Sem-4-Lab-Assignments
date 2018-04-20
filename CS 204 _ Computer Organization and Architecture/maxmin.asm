@@ -5,8 +5,8 @@
 msg1:		.asciiz	"Enter the total number of elements: "
 msg2:		.asciiz	"Enter first number: "
 msg3:		.asciiz	"Enter another number:"
-largeest:	.asciiz	"The largest number is: "
-smallest:	.asciiz	"\nThe smallest number is"
+largest:	.asciiz	"The largest number is: "
+smallest:	.asciiz	"\nThe smallest number is: "
 
 .text
 .globl main
