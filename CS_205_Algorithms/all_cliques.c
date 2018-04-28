@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<limits.h>
+#include <stdlib.h>
 
 #define S 10
 
@@ -21,7 +21,8 @@ int main()
             scanf("%d", &G[i][j]);
         }
     }
-
+    printf("\n");
+    
     max_clique(G, n);
 }
 
@@ -41,39 +42,28 @@ void findMAxCliqueUsingCombinations(int G[][S], int n, int cliqueSize, int curre
         for(lastValue = choosenVertices[position-1] + 1; lastValue <= n; lastValue++) {
             choosenVertices[position] = lastValue;
 
-            /*for(u = 0; u < cliqueSize; u++) {
-                printf("%d ", choosenVertices[u]);
-            }
-            printf("\n");*/
-
             for(i = 0; i < cliqueSize; i++) {
                 for(j = 0; j != i && (j < cliqueSize); j++) {
-                    if(G[choosenVertices[i]][choosenVertices[j]]) {
-                        printf ("Failed at (%d, %d)\n", choosenVertices[i], choosenVertices[j]);
-                        edgeCount++;
+                    if(!G[choosenVertices[i]][choosenVertices[j]]) {
+                        //printf ("Failed at (%d, %d)\n", choosenVertices[i], choosenVertices[j]);
                     }
                     else {
-                        
-                        //edgeCount++;
-                        //printf("Clique of size %d found\n", cliqueSize);
+                        edgeCount++;
                     }
                 }
-                /*if(!G[choosenVertices[i]][choosenVertices[j]]) {
-                        break;
-                }*/
             }
-            printf("\n");
             if(edgeCount == cliqueSize*(cliqueSize - 1)/2) {
+                printf("Clique of size %d is present\n", cliqueSize);
+                printf("The nodes forming the clique are: "); 
                 for(u = 0; u < cliqueSize; u++) {
-                printf("%d ", choosenVertices[u]);
-            }
-            printf("\n");
-                printf("Clique of size %d found\n", cliqueSize);
-        }
-        else
-            printf("Clique of size %d not found\n", cliqueSize);
+                    printf("%d ", choosenVertices[u]);
+                }
+                printf("\n");
+                printf("\n");
+                //exit(0);
         }
         edgeCount=0;
+    }
     }
     else {
         for(value = currentValue; value < n; value++) {
