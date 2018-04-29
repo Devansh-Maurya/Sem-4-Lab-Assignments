@@ -45,16 +45,16 @@ void findMAxCliqueUsingCombinations(int G[][S], int n, int cliqueSize, int curre
         for(lastValue = choosenVertices[position-1] + 1; lastValue <= n; lastValue++) {
             choosenVertices[position] = lastValue;
 
+            //Checking edge between every pair of vertices in the combination of vertices
             for(i = 0; i < cliqueSize; i++) {
                 for(j = 0; j != i && (j < cliqueSize); j++) {
-                    if(!G[choosenVertices[i]][choosenVertices[j]]) {
-                        //printf ("Failed at (%d, %d)\n", choosenVertices[i], choosenVertices[j]);
-                    }
-                    else {
+                    if(G[choosenVertices[i]][choosenVertices[j]])
                         edgeCount++;
-                    }
                 }
             }
+
+            //If max clique is found, print the solution
+            //Checking by the combinational formula of selection 'cliqueSize' vertices out of 'n' vertices
             if(edgeCount == cliqueSize*(cliqueSize - 1)/2) {
                 printf("Max clique of size %d is present\n", cliqueSize);
                 printf("The nodes forming the clique are: "); 
@@ -69,6 +69,7 @@ void findMAxCliqueUsingCombinations(int G[][S], int n, int cliqueSize, int curre
     }
     }
     else {
+        //Finding combinations by filling positions
         for(value = currentValue; value < n; value++) {
             choosenVertices[position] = value;
             findMAxCliqueUsingCombinations(G, n, cliqueSize, choosenVertices[position] + 1, position + 1); 
