@@ -1,62 +1,114 @@
-    #include<stdio.h>
+#include<stdio.h>
 
-    #include<stdlib.h>
-    int i,j,k,a,b,u,v,n,ne=1;
-    int min,mincost=0,cost[9][9],parent[9];
-    int find(int);
-    int uni(int,int);
-    void main()
-	{
-    	printf("\nEnter the no. of vertices:");
-    	scanf("%d",&n);
-    	printf("\nEnter the adjacency matrix:\n");
-    	for(i=1;i<=n;i++)
-    	{
-    		for(j=1;j<=n;j++)
-    		{
-    			scanf("%d",&cost[i][j]);
-    			if(cost[i][j]==0)
-    				cost[i][j]=999;
-    		}
-    	}
-    	printf("The edges of Minimum Cost Spanning Tree are\n");
-    	while(ne < n)
-    	{
-    		for(i=1,min=999;i<=n;i++)
-    		{
-    			for(j=1;j <= n;j++)
-    			{
-    				if(cost[i][j] < min)
-    				{
-    					min=cost[i][j];
-    					a=u=i;
-    					b=v=j;
-    				}
-    			}
-    		}
-    		u=find(u);
-    		v=find(v);
-    		if(uni(u,v))
-    		{
-    			printf("%d edge (%d,%d) =%d\n",ne++,a,b,min);
-    			mincost +=min;
-    		}
-    		cost[a][b]=cost[b][a]=999;
-    	}
-    	printf("\nMinimum cost = %d\n",mincost);
-    }
-    int find(int i)
+#define S 10
+#define E 100
+
+struct weightedEdge
+{
+    int source;
+    int destination;
+    int weight;
+};
+
+typedef struct weightedEdge weightedEdge;
+
+void edge_weight_based_merge_sort(weightedEdge *, int, int);
+void merge(weightedEdge *, int, int, int);
+void kruskal(int [][S], int);
+int findParent(int, int *);
+void insertion(weightedEdge *, int);
+
+int main()
+{
+    int i, j, n, G[S][S];
+    weightedEdge edge[E];
+
+    printf("Enter the number of node: ");
+    scanf("%d", &n);
+
+    printf("Enter the adjacency matrix: ");
+    for(i=1; i<=n; i++)
     {
-    	while(parent[i])
-    	i=parent[i];
-    	return i;
+        for(j=1; j<=n; j++)
+        {
+            scanf("%d", &G[i][j]);
+        }
     }
-    int uni(int i,int j)
+
+    kruskal(G, n);
+
+}
+
+void kruskal(int G[][S], int n)
+{
+    int edgeCount = 1, i, j, parent[S], sourceParent, destinationParent, totalWeight = 0;
+    weightedEdge edge[E], currentedge, output[S];
+
+    for(i=1; i<=n; i++)
     {
-    	if(i!=j)
-    	{
-    		parent[j]=i;
-    		return 1;
-    	}
-    	return 0;
+        parent[i] = i;
     }
+
+    for(i=1; i<=n; i++)
+    {
+        for(j=1; j<=n; j++)
+        {
+            if(i!=j)
+            {
+                edge[edgeCount].source = i;
+                edge[edgeCount].destination = j;
+                edge[edgeCount].weight = G[i][j];
+                edgeCount++;
+            }
+        }
+    }                                                                                                         
+
+    insertion(edge, edgeCount);}
+
+    for(edgeCount=1, i=1; edgeCount != n; i++)
+    {
+        currentedge = edge[i];
+
+        sourceParent = findParent(currentedge.source, parent);
+        destinationParent = findParent(currentedge.destination, parent);
+
+        if(sourceParent != destinationParent)
+        {
+            output[edgeCount++] = currentedge;
+            parent[sourceParent] = destinationParent;
+        }
+    }
+
+    printf("Edges in the MST:\n");
+    for(i=1; i<edgeCount; i++)
+    {
+        printf("(%d, %d) : %d\n", output[i].source, output[i].destination, output[i].weight);
+        totalWeight += output[i].weight;
+    }
+    printf("\nTotal weight of MST: %d\n", totalWeight);
+}
+
+int findParent(int vertex, int *parent)
+{
+    if(parent[vertex] == vertex)
+        return vertex;
+    else
+        return findParent(parent[vertex], parent);
+}
+
+void insertion(weightedEdge *a, int n)
+{
+    int i, j;
+    weightedEdge k;
+
+    for(i=2; i<=n; i++)
+    {
+        k = a[i];
+
+        for(j = i-1; (j>=1) && (a[j].weight > k.weight); j--)
+        {
+           a[j+1] = a[j];
+        }
+        a[j+1] = k;
+    }
+}

@@ -40,12 +40,15 @@ int main()
 
 strassen_matrix multiply(strassen_matrix A, strassen_matrix B)
 {
-    int i, j;
+    int i, j, n;
     n = A.row_end - A.row_start + 1;
+    strassen_matrix C;
 
     if(n == 1)
     {
-        C.matrix[C.row_start][C.row_start] = A.matrix[A.row_start][A.row_start] * B.matrix[B.row_start][B.row_start]
+        C.matrix[C.row_start][C.row_start] = A.matrix[A.row_start][A.row_start] * B.matrix[B.row_start][B.row_start];
+
+        return C;
     }
     else
     {
@@ -53,15 +56,15 @@ strassen_matrix multiply(strassen_matrix A, strassen_matrix B)
         strassen_matrix p1, p2, p3, p4, p5, p6, p7;
         strassen_matrix c1, c2, c3, c4;
 
-        a = initialize_strassen_matrix(A, A.row_start, A.row_end/2; A.column_start; A.column_end/2);
-        b = initialize_strassen_matrix(A, A.row_start, A.row_end/2; A.column_start/2 + 1; A.column_end);
-        c = initialize_strassen_matrix(A, A.row_start/2 + 1, A.row_end; A.column_start; A.column_end/2);
-        d = initialize_strassen_matrix(A, A.row_start/2 + 1, A.row_end; A.column_start/2 + 1; A.column_end);
+        a = initialize_strassen_matrix(A, A.row_start, A.row_end/2, A.column_start, A.column_end/2);
+        b = initialize_strassen_matrix(A, A.row_start, A.row_end/2, A.column_start/2 + 1, A.column_end);
+        c = initialize_strassen_matrix(A, A.row_start/2 + 1, A.row_end, A.column_start, A.column_end/2);
+        d = initialize_strassen_matrix(A, A.row_start/2 + 1, A.row_end, A.column_start/2 + 1, A.column_end);
 
-        e = initialize_strassen_matrix(B, b.row_start, B.row_end/2; B.column_start; B.column_end/2);
-        f = initialize_strassen_matrix(B, b.row_start, B.row_end/2; B.column_start/2 + 1; B.column_end);
-        g = initialize_strassen_matrix(B, b.row_start/2 + 1, B.row_end; B.column_start; B.column_end/2);
-        h = initialize_strassen_matrix(B, b.row_start/2 + 1, B.row_end; B.column_start/2 + 1; B.column_end);
+        e = initialize_strassen_matrix(B, b.row_start, B.row_end/2, B.column_start, B.column_end/2);
+        f = initialize_strassen_matrix(B, b.row_start, B.row_end/2, B.column_start/2 + 1, B.column_end);
+        g = initialize_strassen_matrix(B, b.row_start/2 + 1, B.row_end, B.column_start, B.column_end/2);
+        h = initialize_strassen_matrix(B, b.row_start/2 + 1, B.row_end, B.column_start/2 + 1, B.column_end);
 
         p1 = multiply(a, subtract(f, h));
         p2 = multiply(add(a, b), h);
@@ -71,26 +74,26 @@ strassen_matrix multiply(strassen_matrix A, strassen_matrix B)
         p6 = multiply(subtract(a, c), add(e, f));
         p7 = multiply(subtract(b, d), add(e, h));
 
-        c1 = add(subtract(add(p5, p4), p2), p6));
+        c1 = add(subtract(add(p5, p4), p2), p6);
         c2 = add(p1, p2);
-        c3 = plus(p3, p4);
+        c3 = add(p3, p4);
         c4 = subtract(subtract(add(p1, p5), p3), p7);
 
         for(i = 1; i <= n/2; i++)
             for(j = 1; j<= n/2; j++)
-            C[i][j] = c1[i][j];
+            C.matrix[i][j] = c1.matrix[i][j];
 
         for(i = 1; i <= n/2; i++)
             for(j = n/2 + 1; j<= n; j++)
-            C[i][j] = c2[i][j];
+            C.matrix[i][j] = c2.matrix[i][j];
         
         for(i = n/2 + 1; i <= n; i++)
             for(j = 1; j<= n/2; j++)
-            C[i][j] = c3[i][j];
+            C.matrix[i][j] = c3.matrix[i][j];
         
         for(i = n/2; i <= n; i++)
             for(j = n/2 + 1; j<= n; j++)
-            C[i][j] = c4[i][j];
+            C.matrix[i][j] = c4.matrix[i][j];
         
         return C;
 
@@ -99,7 +102,7 @@ strassen_matrix multiply(strassen_matrix A, strassen_matrix B)
 
 strassen_matrix add(strassen_matrix A, strassen_matrix B)
 {
-    int n = A.row_end - A.row_start + 1;
+    int n = A.row_end - A.row_start + 1, A_i, A_j, B_i, B_j;
     int i, j;
     strassen_matrix result;
 
@@ -107,7 +110,7 @@ strassen_matrix add(strassen_matrix A, strassen_matrix B)
     {
         for(A_j = A.column_start, B_j = B.column_start, j = 1; j < n; j++, A_j++, B_j++)
         {
-            result[i][j] = A.matrix[A_i][A_j] + B.matrix[B_i][B_j];
+            result.matrix[i][j] = A.matrix[A_i][A_j] + B.matrix[B_i][B_j];
         }
     }
 
@@ -117,7 +120,7 @@ strassen_matrix add(strassen_matrix A, strassen_matrix B)
 
 strassen_matrix subtract(strassen_matrix A, strassen_matrix B)
 {
-    int n = A.row_end - A.row_start + 1;
+    int n = A.row_end - A.row_start + 1, A_i, A_j, B_i, B_j;
     int i, j;
     strassen_matrix result;
 
@@ -125,7 +128,7 @@ strassen_matrix subtract(strassen_matrix A, strassen_matrix B)
     {
         for(A_j = A.column_start, B_j = B.column_start, j = 1; j < n; j++, A_j++, B_j++)
         {
-            result[i][j] = A.matrix[A_i][A_j] - B.matrix[B_i][B_j];
+            result.matrix[i][j] = A.matrix[A_i][A_j] - B.matrix[B_i][B_j];
         }
     }
 
